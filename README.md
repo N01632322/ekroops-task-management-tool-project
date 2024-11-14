@@ -36,11 +36,12 @@ Clone the Repository, by running the following command: git clone https://github
 ### Install all of the Dependencies:
 If you have to do so, you have to install all of the dependencies, which includes the "node_modules" folder that contains all of the contents, by running the following command: npm install
 ### Set Up Environment Variables:
-If you need to do so, create a .env file in the project root to configure necessary variables like PORT for server setup (database configurations should be skipped as per Project Phase 2 Instructions). If the .env file is there already in the project, then you do not have to follow this instruction at all.
+If you need to do so, you have to create a .env file in the project root, then copy and paste the following inside the .env file: MONGODB_URI=mongodb+srv://ekroop2005:TX7m9QzjOQ7Vokro@cluster0.so6df.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+The above MONGODB_URI is a connection string that specifies the path to my MongoDB database. It's used by the application to connect to the MongoDB database instance and is essential for enabling database operations.
 ### Start the server:
 To start the server, run the following command: node server.js
 ### Access the Application:
-Open a tab on your browser and navigate to http://localhost:5000 (which is the specified port in the server.js file) to start using the Task Management Tool Application by managing the tasks, such as creating, reading, updating, and deleting the tasks, and other sorts of things that is available to do on the Task Management Tool Application.
+Open a tab on your browser and navigate to http://localhost:5000 (which is the specified port in the server.js file) to start using the Task Management Tool Application by managing the tasks, such as creating, reading, updating, and deleting the tasks, and other sorts of things that are available to do on the Task Management Tool Application.
 
 ## Usage Guidelines
 ## 1. Navigating Between Pages:
@@ -51,6 +52,6 @@ Open a tab on your browser and navigate to http://localhost:5000 (which is the s
 - Click "Filter Your Tasks" to apply the chosen filters.
 ## 3. Editing and Deleting Tasks:
 - Each task can be edited directly from the task display page.
-- Click "Update Your Task" after editing or "Delete Your Task" to remove a task permanently.
+- Click "Update Your Task" after editing, or "Delete Your Task" to remove a task permanently.
 ## 4. Notifications:
-- Alert messages are provided for successful task updates, filtering confirmation, and task deletion.
+- Alert messages are provided for successful task updates, filtering confirmation, task deletion, going back to the "Task Management Tool Page", and going back to the "Filter Your Tasks & Your List Of Tasks Page".

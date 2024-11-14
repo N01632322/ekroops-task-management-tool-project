@@ -1,7 +1,7 @@
 # Ekroop's Task Management Tool Project
 
 ## Project Overview
-Ekroop's Task Management Tool is a full-stack web application designed for effective task management. The tool provides users with a streamlined interface to manage tasks through creation, editing, filtering, and deletion functionalities. Users can set task priorities, sort by creation date or priority, and update statuses (Pending, In Progress, Completed). The project emphasizes RESTful API design, modular routing, middleware integration, and responsive UI components.
+Ekroop's Task Management Tool Project is a full-stack web application designed for effective task management. The tool provides users with a streamlined interface to manage tasks through creation, editing, filtering, and deletion functionalities. Users can set task priorities, sort by creation date or priority, and update statuses (Pending, In Progress, Completed). The project emphasizes RESTful API design, modular routing, middleware integration, and responsive UI components.
 
 ## Features
 - **Task Creation**: Add new tasks with a title, description, priority, status, and due date.

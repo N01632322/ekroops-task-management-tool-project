@@ -41,3 +41,16 @@ If you need to do so, create a .env file in the project root to configure necess
 To start the server, run the following command: node server.js
 ### Access the Application:
 Open a tab on your browser and navigate to http://localhost:5000 (which is the specified port in the server.js file) to start using the Task Management Tool Application by managing the tasks, such as creating, reading, updating, and deleting the tasks, and other sorts of things that is available to do on the Task Management Tool Application.
+
+## Usage Guidelines
+## 1. Navigating Between Pages:
+- The task creation page allows users to enter new tasks with specific details.
+- The task display page shows a list of tasks with filtering and sorting options.
+## 2. Filtering and Sorting:
+- Use the filter options on the task display page to sort tasks by priority or creation date and filter by task status.
+- Click "Filter Your Tasks" to apply the chosen filters.
+## 3. Editing and Deleting Tasks:
+- Each task can be edited directly from the task display page.
+- Click "Update Your Task" after editing or "Delete Your Task" to remove a task permanently.
+## 4. Notifications:
+- Alert messages are provided for successful task updates, filtering confirmation, and task deletion.

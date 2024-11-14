@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Management Tool Page</title>
+</head>
+<body>
+    <!-- Main Container -->
+    <div id="app">
+        <header>
+            <h1>Task Management Tool</h1>
+        </header>
+
+        <!-- Task Form Section -->
+        <section id="task-form-section">
+            <form id="task-form">
+                <!-- Task Title Input -->
+                <label for="title">Task Title</label>
+                <input type="text" id="title" placeholder="Task Title" required>
+
+                <!-- Task Description Input -->
+                <label for="description">Task Description</label>
+                <textarea id="description" placeholder="Task Description" required></textarea>
+
+                <!-- Due Date Input -->
+                <label for="dueDate">Due Date (yyyy-mm-dd)</label>
+                <input type="date" id="dueDate" required>
+
+                <!-- Task Priority Input -->
+                <label for="priority">Task Priority</label>
+                <select id="priority">
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                </select>
+                <button type="submit">Add Your Task</button>
+            </form>
+        </section>
+
+        <!-- Go back button, initially hidden -->
+        <div id="goBackButtonContainer">
+            <button id="goBackButton" style="display: none;" onclick="window.location.href = '/tasks'">
+                Go back to the "Filter Your Tasks & Your List Of Tasks Page"
+            </button>
+        </div>
+    </div>
+
+    <style>
+        body, html {
+            font-family: 'Times New Roman', Times, serif;
+            margin-top: 10px;
+            padding: 0;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #app {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        #task-form-section {
+            margin: 20px 0;
+        }
+
+        #task-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #task-form label {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+        }
+
+        #task-form input, #task-form textarea, #task-form select, #task-form button {
+            margin: 5px 0;
+            padding: 10px;
+            font-size: 1em;
+        }
+
+        #task-form button {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 24px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 30px;
+            padding: 10px;
+        }
+
+        #task-form button:hover {
+            background-color: #45a049;
+        }
+
+        button {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 24px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 30px;
+            padding: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #goBackButtonContainer {
+            display: flex;
+            justify-content: center;
+            margin-top: -20px;
+        }
+    </style>
+
+    <script>
+        // Check for existing tasks when the page loads
+        document.addEventListener("DOMContentLoaded", checkIfTasksExist);
+
+        // Function to check if tasks exist
+        async function checkIfTasksExist() {
+            try {
+                const response = await fetch('/api/tasks/exist');
+                const data = await response.json();
+                if (data.tasksExist) {
+                    document.getElementById("goBackButton").style.display = "block";
+                }
+            } catch (error) {
+                console.error('Error checking task existence:', error);
+            }
+        }
+
+        // Add task form submission logic
+        document.getElementById("task-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            addTask();
+        });
+    
+        async function addTask() {
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+            const dueDate = document.getElementById('dueDate').value;
+            const priority = document.getElementById('priority').value;
+    
+            try {
+                const response = await fetch('/api/tasks', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title, description, dueDate, priority })
+                });
+                if (response.ok) {
+                    alert(`The "${title}" task has been added successfully!`); // Custom alert success message with task title
+                    document.getElementById("goBackButton").style.display = "block"; // Show the button after task(s) are added
+                    window.location.href = '/tasks';
+                } else {
+                    console.error('Failed to add task');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filter Your Tasks & Your List Of Tasks Page</title>
+</head>
+<body>
+    <h1 style="background-color: #4CAF50; padding: 10px; color: white; width: 31.13%; text-align: center;">Filter Your Tasks</h1>
+
+    <!-- Filter Options -->
+    <section id="filter-section">
+        <!-- Filter by Status -->
+        <label for="status-filter">Filter by Status:</label>
+        <select id="status-filter">
+            <option value="all">All</option>
+            <option value="Pending">Pending</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+        </select>
+        <!-- Filter & Sort Tasks by Creation Date -->
+        <label for="sort-filter">Filter & Sort Tasks by:</label>
+        <select id="sort-filter">
+            <option value="creationDate">Creation Date</option>
+            <option value="priority">Task Priority</option>
+        </select>
+        <!-- Apply Task Filters Button -->
+        <button onclick="handleFilterButtonClick()">Filter Your Tasks</button>
+    </section>
+
+    <!-- Task List -->
+    <section id="tasks-section">
+        <h1 style="background-color: #4CAF50; padding: 10px; color: white; width: 31.13%; text-align: center;">Your List Of Tasks</h1>
+    </section>
+
+    <div id="tasks"></div>
+
+    <!-- Go back to Task Creation Page Button -->
+    <button class="goBackWindowButton1" onclick="window.location.href = '/'">Go back to the "Task Management Tool Page"</button>
+
+    <style>
+        body, html {
+            font-family: 'Times New Roman', Times, serif;
+            margin-top: 10px;
+            padding: 0;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        #tasks-section, #filter-section {
+            margin: 20px 0;
+        }
+
+        #tasks {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .task {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 5px 0;
+            height: 474px;
+            width: 30%;
+            box-sizing: border-box;
+        }
+
+        .task h3 {
+            font-size: 24px;
+            font-weight: bold;
+            background-color: #4CAF50;
+            padding: 10px;
+            text-align: center;
+            color: white;
+            width: 60%;
+            box-sizing: border-box;
+        }
+
+        button {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #4CAF50;
+            font-size: 16px;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .goBackWindowButton1 {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #4CAF50;
+            font-size: 16px;
+            margin-top: 27px;
+            margin-left: 11px;
+        }
+
+        .goBackWindowButton2 {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #4CAF50;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .goBackWindowButton1:hover,
+        .goBackWindowButton2:hover {
+            background-color: #45a049;
+        }
+
+        button, .goBackWindowButton1, .goBackWindowButton2 {
+            cursor: pointer;
+        }
+    </style>
+
+    <script>
+        async function displayTasks(tasks) {
+            const tasksContainer = document.getElementById('tasks');
+            tasksContainer.innerHTML = tasks.map(task => `
+                <div class="task" data-status="${task.status}" data-priority="${task.priority}">
+                    <h3>Task Title: ${task.title}</h3>
+                    <p>Task Description: ${task.description}</p>
+                    <p>Due Date (yyyy-mm-dd): ${formatDate(task.dueDate)}</p>
+                    <p>Task Priority: ${task.priority}</p>
+                    <p>Task Status: ${task.status}</p>
+                    <!-- Form to edit task information -->
+                    <form id="edit-task-form-${task._id}" onsubmit="updateTask(event, '${task._id}')">
+                        <label for="title">Title:</label>
+                        <input type="text" id="title" name="title" value="${task.title}" required><br>
+                        
+                        <label for="description">Description:</label>
+                        <textarea id="description" name="description" required>${task.description}</textarea><br>
+                        
+                        <label for="dueDate">Due Date (yyyy-mm-dd):</label>
+                        <input type="date" id="dueDate" name="dueDate" value="${formatDate(task.dueDate)}"><br>
+                        
+                        <label for="status">Status:</label>
+                        <select id="status" name="status">
+                            <option value="Pending" ${task.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                            <option value="In Progress" ${task.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                            <option value="Completed" ${task.status === 'Completed' ? 'selected' : ''}>Completed</option>
+                        </select><br>
+
+                        <button type="submit">Update Your Task</button>
+                        <button type="button" onclick="deleteTask('${task._id}', '${task.title}')">Delete Your Task</button>
+                        <!-- Second "Go back" button (inside task box) -->
+                        <button class="goBackWindowButton2" onclick="window.location.href = '/'">Go back to the "Task Management Tool Page"</button>
+                    </form>
+                </div>
+            `).join('');
+        }
+
+        async function updateTask(event, taskId) {
+            event.preventDefault();  // Prevent the default form submission
+
+            const form = document.getElementById(`edit-task-form-${taskId}`);
+            const formData = new FormData(form);
+
+            const updatedTask = {
+                title: formData.get('title'),
+                description: formData.get('description'),
+                dueDate: formData.get('dueDate'),
+                status: formData.get('status')
+            };
+
+            try {
+                const response = await fetch(`/api/tasks/${taskId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updatedTask)
+                });
+
+                if (response.ok) {
+                    console.log('Task updated successfully');
+                    applyFilters();  // Refresh task list with updated data
+                } else {
+                    console.error('Failed to update task');
+                    alert('Error updating task. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error updating task:', error);
+                alert('Error updating task. Please try again.');
+            }
+        }
+
+        async function deleteTask(taskId, taskTitle) {
+            const confirmDelete = confirm(`Are you sure you want to delete the "${taskTitle}" task?`);
+            if (confirmDelete) {
+                try {
+                    const response = await fetch(`/api/tasks/${taskId}`, { method: 'DELETE' });
+                    if (response.ok) {
+                        alert(`The "${taskTitle}" task has been deleted successfully!`);
+                        applyFilters();
+                    } else {
+                        console.error('Failed to delete task');
+                        alert('Error deleting task. Please try again.');
+                    }
+                } catch (error) {
+                    console.error('Error deleting task:', error);
+                    alert('Error deleting task. Please try again.');
+                }
+            }
+        }
+
+        function formatDate(isoDateString) {
+            return isoDateString ? isoDateString.split('T')[0] : "No due date set";
+        }
+
+        function handleFilterButtonClick() {
+            alert("Your task(s) have been filtered successfully!");
+            applyFilters();
+        }
+
+        async function applyFilters() {
+            const statusFilter = document.getElementById('status-filter').value;
+            const sortFilter = document.getElementById('sort-filter').value;
+    
+            try {
+                const response = await fetch('/api/tasks');
+                if (!response.ok) {
+                    console.error('Error fetching tasks');
+                    alert('Error fetching tasks. Please try again.');
+                    return;
+                }
+                let tasks = await response.json();
+    
+                // Apply status filter
+                if (statusFilter !== 'all') {
+                    tasks = tasks.filter(task => task.status === statusFilter);
+                }
+    
+                // Apply sort filter
+                tasks.sort((a, b) => {
+                    if (sortFilter === 'creationDate') {
+                        return new Date(a.creationDate) - new Date(b.creationDate);
+                    } else if (sortFilter === 'priority') {
+                        return a.priority.localeCompare(b.priority);
+                    }
+                    return 0;
+                });
+    
+                displayTasks(tasks);
+
+            } catch (error) {
+                console.error('Error loading tasks:', error);
+                alert('Error loading tasks. Please try again.');
+            }
+        }
+
+        // Load tasks on page load
+        document.addEventListener('DOMContentLoaded', applyFilters);
+    </script>
+</body>
+</html>

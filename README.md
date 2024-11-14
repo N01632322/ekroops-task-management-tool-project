@@ -36,8 +36,8 @@ Clone the Repository, by running the following command: git clone https://github
 ### Install all of the Dependencies:
 If you have to do so, you have to install all of the dependencies, which includes the "node_modules" folder that contains all of the contents, by running the following command: npm install
 ### Set Up Environment Variables:
-If you need to do so, you have to create a .env file in the project root, then copy and paste the following inside the .env file: MONGODB_URI=mongodb+srv://ekroop2005:TX7m9QzjOQ7Vokro@cluster0.so6df.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
-The above MONGODB_URI is a connection string that specifies the path to my MongoDB database. It's used by the application to connect to the MongoDB database instance and is essential for enabling database operations.
+If you need to do so, you have to create a .env file in the project root, then copy and paste the following inside the .env file: MONGODB_URI=mongodb+srv://ekroop2005:TX7m9QzjOQ7Vokro@cluster0.so6df.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0                                                    
+                                                                                                                                                                                  The above MONGODB_URI is a connection string that specifies the path to my MongoDB database. It's used by the application to connect to the MongoDB database instance and is essential for enabling database operations.
 ### Start the server:
 To start the server, run the following command: node server.js
 ### Access the Application:

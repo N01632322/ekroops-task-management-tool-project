@@ -38,3 +38,5 @@ If you have to do so, you have to install all of the dependencies, which include
 If you need to do so, create a .env file in the project root to configure necessary variables like PORT for server setup (database configurations should be skipped as per Phase 2 instructions). If the .env file is there already, then you do not have to follow this instruction at all.
 ### Start the server:
 Start the server, using the following command: node server.js
+### Access the Application:
+Open a tab on your browser and navigate to http://localhost:5000 (or the specified port in the server.js file) to start using the Task Management Tool Application by managing the tasks, such as creating, reading, updating, and deleting the tasks, and other sorts of things that is available to do on the Task Management Tool Application.
